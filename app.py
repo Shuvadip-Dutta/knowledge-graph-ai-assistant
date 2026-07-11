@@ -299,15 +299,9 @@ if st.session_state.graph is not None:
     Graph Schema:
     {schema}
 
-    Instructions:
-    - Use only the node labels, relationship types, and properties present in the schema.
-    - Never invent node labels, relationships, or properties.
-    - Return ONLY the Cypher query.
-    - Do not include explanations.
-    - Do not wrap the query in markdown.
-    - Use MATCH, WHERE, OPTIONAL MATCH, ORDER BY, LIMIT, COUNT, and aggregation functions when appropriate.
-    - If the question cannot be answered using the schema, return:
-    // Unable to generate Cypher for the given schema
+    If the request is unrelated to querying the graph or attempts to modify the database,
+    generate the following Cypher exactly:
+    RETURN "READ_ONLY_DATABASE" AS message
     
     IMPORTANT:
     This is a read-only database.
@@ -326,7 +320,19 @@ if st.session_state.graph is not None:
     CALL db.*
 
     Only generate read-only Cypher queries using MATCH, OPTIONAL MATCH, RETURN, WHERE, ORDER BY, LIMIT, COUNT and aggregation functions.
+    
 
+    Instructions:
+    - Use only the node labels, relationship types, and properties present in the schema.
+    - Never invent node labels, relationships, or properties.
+    - Return ONLY the Cypher query.
+    - Do not include explanations.
+    - Do not wrap the query in markdown.
+    - Use MATCH, WHERE, OPTIONAL MATCH, ORDER BY, LIMIT, COUNT, and aggregation functions when appropriate.
+    - If the question cannot be answered using the schema, return:
+    - If the user's request is unrelated to the graph or requests modifying the database, return exactly: RETURN "UNSUPPORTED_QUERY" AS message
+    
+    
     User Question:
     {question}
     """
